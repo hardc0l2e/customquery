@@ -1,0 +1,22 @@
+{
+  "name": "@saltcorn/customquery",
+  "version": "0.1.0",
+  "description": "SQL query statistics",
+  "main": "index.js",
+  "dependencies": {
+    "@saltcorn/markup": "^0.4.1",
+    "@saltcorn/data": "^0.4.1"
+  },
+  "author": "Ronald Artos",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^25.1.0"
+  },
+  "repository": "github:saltcorn/customquery",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
