@@ -19,11 +19,11 @@ const configuration_workflow = () =>
   new Workflow({
     steps: [
       {
-        name: "customquery",
+        name: "Customquery",
         form: async (context) => {
           const table = await Table.findOne({ id: context.table_id });
           const fields = await table.getFields();
-          const statOptions = ["Count", "Avg", "Sum", "Max", "Min", "Custom"];
+          const statOptions = ["Count", "Avg", "Sum", "Max", "Min"];
           fields.forEach((f) => {
             if (f.type && f.type.name === "Date") {
               statOptions.push(`Latest ${f.name}`);
@@ -33,7 +33,7 @@ const configuration_workflow = () =>
             fields: [
               {
                 name: "customquery",
-                label: "CustomQuery",
+                label: "Customquery",
                 type: "String",
                 required: true,
                 attributes: {
@@ -89,13 +89,6 @@ const configuration_workflow = () =>
                 type: "String",
                 required: false,
               },
-              {
-                name: "condition",
-                label: "Query Condition",
-                sublabel: "For example: ",
-                type: "String",
-                required: false,
-              },
             ],
           });
         },
@@ -115,7 +108,7 @@ const get_state_fields = async (table_id, viewname, { show_view }) => {
 const run = async (
   table_id,
   viewname,
-  { statistic, field, text_style, decimal_places, pre_text, post_text, condition },
+  { statistic, field, text_style, decimal_places, pre_text, post_text },
   state,
   extraArgs
 ) => {
@@ -128,26 +121,16 @@ const run = async (
   let sql;
   if (statistic.startsWith("Latest ")) {
     const dateField = statistic.replace("Latest ", "");
-    sql = `select ${db.sqlsanitize(field)} as the_stat from ${schema}"${
-      tbl.name
-    }"
+    sql = `select ${db.sqlsanitize(
+      field
+    )} as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}"
     where ${dateField}=(select max(${dateField}) from ${schema}"${db.sqlsanitize(
       tbl.name
     )}" ${where ? ` and ${where}` : ""})`;
-  }
-  else if (statistic.startsWith("Custom")) {
-       const where = condition;
-       sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
-  	          field
-        )}) as the_stat from ${schema}"${tbl.name}" ${where}`;
-  }
-  else {
-    const where = condition;
+  } else
     sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
       field
-    )}) as the_stat from ${schema}"${tbl.name}" ${where}`;
-  }
-
+    )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${where}`;
   const { rows } = await db.query(sql, values);
   const the_stat = rows[0].the_stat;
   const show_stat =
@@ -166,7 +149,7 @@ module.exports = {
   sc_plugin_api_version: 1,
   viewtemplates: [
     {
-      name: "CustomQuery",
+      name: "Customquery",
       display_state_form: false,
       get_state_fields,
       configuration_workflow,
