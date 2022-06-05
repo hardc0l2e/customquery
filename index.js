@@ -108,7 +108,7 @@ const get_state_fields = async (table_id, viewname, { show_view }) => {
 const run = async (
   table_id,
   viewname,
-  { statistic, field, text_style, decimal_places, pre_text, post_text },
+  { customquery, field, text_style, decimal_places, pre_text, post_text },
   state,
   extraArgs
 ) => {
@@ -119,8 +119,8 @@ const run = async (
   const schema = db.getTenantSchemaPrefix();
 
   let sql;
-  if (statistic.startsWith("Latest ")) {
-    const dateField = statistic.replace("Latest ", "");
+  if (customquery.startsWith("Latest ")) {
+    const dateField = customquery.replace("Latest ", "");
     sql = `select ${db.sqlsanitize(
       field
     )} as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}"
@@ -128,7 +128,7 @@ const run = async (
       tbl.name
     )}" ${where ? ` and ${where}` : ""})`;
   } else
-    sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
+    sql = `select ${db.sqlsanitize(customquery)}(${db.sqlsanitize(
       field
     )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${where}`;
   const { rows } = await db.query(sql, values);
