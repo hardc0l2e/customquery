@@ -19,7 +19,7 @@ const configuration_workflow = () =>
   new Workflow({
     steps: [
       {
-        name: "Customquery",
+        name: "statistic",
         form: async (context) => {
           const table = await Table.findOne({ id: context.table_id });
           const fields = await table.getFields();
@@ -32,8 +32,8 @@ const configuration_workflow = () =>
           return new Form({
             fields: [
               {
-                name: "customquery",
-                label: "Customquery",
+                name: "statistic",
+                label: "statistic",
                 type: "String",
                 required: true,
                 attributes: {
@@ -108,7 +108,7 @@ const get_state_fields = async (table_id, viewname, { show_view }) => {
 const run = async (
   table_id,
   viewname,
-  { customquery, field, text_style, decimal_places, pre_text, post_text },
+  { statistic, field, text_style, decimal_places, pre_text, post_text },
   state,
   extraArgs
 ) => {
@@ -119,8 +119,8 @@ const run = async (
   const schema = db.getTenantSchemaPrefix();
 
   let sql;
-  if (customquery.startsWith("Latest ")) {
-    const dateField = customquery.replace("Latest ", "");
+  if (statistic.startsWith("Latest ")) {
+    const dateField = statistic.replace("Latest ", "");
     sql = `select ${db.sqlsanitize(
       field
     )} as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}"
@@ -128,7 +128,7 @@ const run = async (
       tbl.name
     )}" ${where ? ` and ${where}` : ""})`;
   } else
-    sql = `select ${db.sqlsanitize(customquery)}(${db.sqlsanitize(
+    sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
       field
     )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${where}`;
   const { rows } = await db.query(sql, values);
@@ -149,7 +149,7 @@ module.exports = {
   sc_plugin_api_version: 1,
   viewtemplates: [
     {
-      name: "Customquery",
+      name: "statistic",
       display_state_form: false,
       get_state_fields,
       configuration_workflow,
