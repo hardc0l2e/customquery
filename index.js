@@ -137,7 +137,7 @@ const run = async (
   } 
   else if (statistic.startsWith("Custom")) {
     const where = condition;
-    sql = condition;
+    sql = `select count(platform) from assetsystems where platform like 'Desktop PC'`;
  }  
    else
     sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
