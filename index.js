@@ -23,7 +23,7 @@ const configuration_workflow = () =>
         form: async (context) => {
           const table = await Table.findOne({ id: context.table_id });
           const fields = await table.getFields();
-          const statOptions = ["Count", "Avg", "Sum", "Max", "Min"];
+          const statOptions = ["Count", "Avg", "Sum", "Max", "Min","Custom"];
           fields.forEach((f) => {
             if (f.type && f.type.name === "Date") {
               statOptions.push(`Latest ${f.name}`);
@@ -89,6 +89,13 @@ const configuration_workflow = () =>
                 type: "String",
                 required: false,
               },
+              {
+                name: "condition",
+                label: "Query Condition",
+                sublabel: "For example: ",
+                type: "String",
+                required: false,
+              },
             ],
           });
         },
@@ -127,10 +134,18 @@ const run = async (
     where ${dateField}=(select max(${dateField}) from ${schema}"${db.sqlsanitize(
       tbl.name
     )}" ${where ? ` and ${where}` : ""})`;
-  } else
+  } 
+  else if (statistic.startsWith("Custom")) {
+    const where = condition;
+    sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
+           field
+     )}) as the_stat from ${schema}"${tbl.name}" ${where}`;
+ }  
+   else
     sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
       field
     )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${where}`;
+    
   const { rows } = await db.query(sql, values);
   const the_stat = rows[0].the_stat;
   const show_stat =
