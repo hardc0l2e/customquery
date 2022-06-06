@@ -19,7 +19,7 @@ const configuration_workflow = () =>
   new Workflow({
     steps: [
       {
-        name: "statistic",
+        name: "customquery",
         form: async (context) => {
           const table = await Table.findOne({ id: context.table_id });
           const fields = await table.getFields();
