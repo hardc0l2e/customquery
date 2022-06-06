@@ -1,6 +1,6 @@
 {
   "name": "customquery",
-  "version": "0.1.3",
+  "version": "0.1.3b",
   "description": "SQL query statistics",
   "main": "index.js",
   "dependencies": {
