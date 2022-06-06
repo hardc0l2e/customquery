@@ -33,7 +33,7 @@ const configuration_workflow = () =>
             fields: [
               {
                 name: "statistic",
-                label: "statistic",
+                label: "customquery",
                 type: "String",
                 required: true,
                 attributes: {
