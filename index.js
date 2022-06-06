@@ -136,10 +136,9 @@ const run = async (
     )}" ${where ? ` and ${where}` : ""})`;
   } 
   else if (statistic.startsWith("Custom")) {
-    const where = condition;
     sql = `select ${db.sqlsanitize(pre_text)}(${db.sqlsanitize(
       field
-    )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${where}`;
+    )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${condition}`;
     pre_text = "";
  }  
    else
