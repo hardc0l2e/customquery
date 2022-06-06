@@ -149,7 +149,7 @@ module.exports = {
   sc_plugin_api_version: 1,
   viewtemplates: [
     {
-      name: "statistic",
+      name: "customquery",
       display_state_form: false,
       get_state_fields,
       configuration_workflow,
