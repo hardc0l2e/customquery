@@ -115,7 +115,7 @@ const get_state_fields = async (table_id, viewname, { show_view }) => {
 const run = async (
   table_id,
   viewname,
-  { statistic, field, text_style, decimal_places, pre_text, post_text },
+  { statistic, field, text_style, decimal_places, pre_text, post_text, condition },
   state,
   extraArgs
 ) => {
