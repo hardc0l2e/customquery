@@ -140,6 +140,7 @@ const run = async (
     sql = `select ${db.sqlsanitize(pre_text)}(${db.sqlsanitize(
       field
     )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${where}`;
+    pre_text = "";
  }  
    else
     sql = `select ${db.sqlsanitize(statistic)}(${db.sqlsanitize(
