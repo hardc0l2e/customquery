@@ -138,7 +138,7 @@ const run = async (
   else if (statistic.startsWith("Custom")) {
     sql = `select ${db.sqlsanitize(pre_text)}(${db.sqlsanitize(
       field
-    )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${condition}`;
+    )}) as the_stat from ${schema}"${db.sqlsanitize(tbl.name)}" ${db.sqlsanitize(condition)}`;
     pre_text = "";
  }  
    else
