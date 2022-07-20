@@ -151,7 +151,7 @@ const run = async (
   const show_stat =
     typeof decimal_places === "undefined"
       ? the_stat
-        : parseFloat(+the_stat).toFixed(decimal_places);
+        :the_stat.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+".00";
   return div(
     { class: [text_style] },
     pre_text || "",
