@@ -151,7 +151,7 @@ const run = async (
   const show_stat =
     typeof decimal_places === "undefined"
       ? the_stat
-      : (+the_stat).toFixed(decimal_places);
+        : parseFloat(+the_stat).toFixed(decimal_places);
   return div(
     { class: [text_style] },
     pre_text || "",
